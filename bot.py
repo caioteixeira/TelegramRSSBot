@@ -1,10 +1,10 @@
 from telegram.ext import Updater
-from telegram.ext import CommandHandler
+from telegram.ext import MessageHandler, Filters
 import logging
 import os
 
 def hello(bot, update):
-    update.message.reply_text("AAAAA")
+    update.message.reply_text("LALALALALA")
 
 TOKEN = os.environ.get('TOKEN')
 WEBHOOK = os.environ.get('WEBHOOK')
@@ -14,7 +14,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 updater = Updater(TOKEN)
-updater.dispatcher.add_handler(CommandHandler('hello', hello))
+updater.dispatcher.add_handler(MessageHandler(Filters.text, hello))
 
 # add handlers
 updater.start_webhook(listen="0.0.0.0",

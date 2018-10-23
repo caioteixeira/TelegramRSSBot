@@ -2,8 +2,8 @@ from telegram.ext import Updater
 import logging
 import os
 
-def start(bot, update):
-    bot.send_message(chat_id=update.message.chat_id, text="AAAAA")
+def hello(bot, update):
+    update.message.reply_text("AAAAA")
 
 TOKEN = os.environ.get('TOKEN')
 WEBHOOK = os.environ.get('WEBHOOK')
@@ -20,4 +20,4 @@ updater.start_webhook(listen="0.0.0.0",
 updater.bot.set_webhook(WEBHOOK + TOKEN)
 updater.idle()
 
-updater.dispatcher.add_handler(CommandHandler('start', start))
+updater.dispatcher.add_handler(CommandHandler('hello', hello))

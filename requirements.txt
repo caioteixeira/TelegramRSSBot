@@ -1,1 +1,2 @@
 python-telegram-bot
+APScheduler==3.0.0

@@ -4,7 +4,7 @@ import logging
 import os
 
 def hello(bot, update):
-    update.message.reply_text("LALALALALA")
+    update.message.reply_text(update.message.text.upper())
 
 TOKEN = os.environ.get('TOKEN')
 WEBHOOK = os.environ.get('WEBHOOK')

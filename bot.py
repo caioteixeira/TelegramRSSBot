@@ -14,6 +14,8 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 updater = Updater(TOKEN)
+updater.dispatcher.add_handler(CommandHandler('hello', hello))
+
 # add handlers
 updater.start_webhook(listen="0.0.0.0",
                       port=PORT,
@@ -21,4 +23,3 @@ updater.start_webhook(listen="0.0.0.0",
 updater.bot.set_webhook(WEBHOOK + TOKEN)
 updater.idle()
 
-updater.dispatcher.add_handler(CommandHandler('hello', hello))

@@ -36,7 +36,7 @@ class Model:
 
     def get_chat(self, chat_id):
         chat = self.session.query(Chat).filter(Chat.chat_id == chat_id).one_or_none()
-        if chat is not None:
+        if chat is None:
             chat = Chat(chat_id=chat_id)
             self.session.add(chat)
         return chat

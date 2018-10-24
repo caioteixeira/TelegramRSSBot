@@ -1,10 +1,11 @@
 from telegram.ext import Updater
 from telegram.ext import MessageHandler, Filters
-from telegram.error import (TelegramError, Unauthorized, BadRequest, 
+from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 import logging
 import os
 import feedparser
+
 
 def handle_link(bot, update):
     d = feedparser.parse(update.message.text)
@@ -12,6 +13,7 @@ def handle_link(bot, update):
         text = post.title
         text += '\t' + post.link
         bot.send_message(chat_id=update.message.chat_id, text=text)
+
 
 def error_callback(bot, update, error):
     try:
@@ -35,21 +37,25 @@ def error_callback(bot, update, error):
         print('Error!')
         # handle all other telegram related errors
 
+
 def add_handlers(dispatcher):
-    dispatcher.add_handler(MessageHandler(Filters.text & (Filters.entity('url') | Filters.entity('text_link')), handle_link))
+    dispatcher.add_handler(
+        MessageHandler(Filters.text & (Filters.entity('url') | Filters.entity('text_link')), handle_link))
     dispatcher.add_error_handler(error_callback)
 
+
 def setup_webhook(updater, token):
-    WEBHOOK = os.environ.get('WEBHOOK')
-    PORT = int(os.environ.get('PORT', '8443'))
+    webhook = os.environ.get('WEBHOOK')
+    port = int(os.environ.get('PORT', '8443'))
     updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
-                      url_path=token)
-    updater.bot.set_webhook(WEBHOOK + token)
+                          port=port,
+                          url_path=token)
+    updater.bot.set_webhook(webhook + token)
+
 
 TOKEN = os.environ.get('TOKEN')
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                     level=logging.INFO)
+                    level=logging.INFO)
 
 updater = Updater(TOKEN)
 dispatcher = updater.dispatcher
@@ -57,4 +63,3 @@ add_handlers(dispatcher)
 
 setup_webhook(updater, TOKEN)
 updater.idle()
-

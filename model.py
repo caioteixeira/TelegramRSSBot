@@ -47,6 +47,9 @@ class Model:
         self.session.add(new_feed)
         self.session.commit()
 
-    def get_all_feeds(self, chat_id):
+    def get_all_feeds(self):
+        return self.session.query(Feed).all()
+
+    def get_feeds(self, chat_id):
         chat = self.get_chat(chat_id)
         return self.session.query(Feed).filter(Feed.chat_id == chat.id).all()

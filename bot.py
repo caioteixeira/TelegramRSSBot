@@ -9,8 +9,10 @@ def hello(bot, update):
 
 def processAudio(bot, update):
 	voice = update.message.voice.get_file()
-	downloadedVoice = voice.download_as_bytearray()
-	update.message.reply_text("DOWNLOADED_VOICE")
+	downloadedVoicePath = voice.download()
+	with open(downloadedVoicePath, 'rb') as f:
+		resp = witClient.speech(f, None, {'Content-Type': 'audio/wav'})
+		update.message.reply_text(str(resp))
 
 TOKEN = os.environ.get('TOKEN')
 WEBHOOK = os.environ.get('WEBHOOK')

@@ -40,6 +40,7 @@ def handle_add_link(bot, update):
     chat_id = update.message.chat_id
     link = update.message.text
     model.add_feed(chat_id, link)
+    bot.send_message(chat_id=chat_id, text="Added! :)")
 
 
 def error_callback(bot, update, error):

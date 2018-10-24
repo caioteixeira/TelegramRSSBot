@@ -12,14 +12,16 @@ sched = BlockingScheduler()
 
 @sched.scheduled_job('interval', minutes=1)
 def timed_job():
-    model = Model()
-    token = os.environ.get('TOKEN')
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.INFO)
-    updater = Updater(token)
     feeds = model.get_all_feeds()
-
     for feed in feeds:
-        update_feed(updater.bot, feed.chat.chat_id, feed.url)
+        chat = model.get_chat(feed.chat_id)
+        update_feed(updater.bot, chat.chat_id, feed.url)
+
+
+model = Model()
+token = os.environ.get('TOKEN')
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
+updater = Updater(token)
 
 sched.start()

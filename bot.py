@@ -8,10 +8,10 @@ import feedparser
 
 def handle_link(bot, update):
     d = feedparser.parse(update.message.text)
-    print('parsed! ' + update.message.text)
     for post in d.entries:
-        print('title: ' + post.title)
-        bot.send_message(chat_id=update.message.chat_id, text=post.title)
+        text = post.title
+        text += '\t' + post.link
+        bot.send_message(chat_id=update.message.chat_id, text=text)
 
 def error_callback(bot, update, error):
     try:
@@ -35,23 +35,26 @@ def error_callback(bot, update, error):
         print('Error!')
         # handle all other telegram related errors
 
-TOKEN = os.environ.get('TOKEN')
-WEBHOOK = os.environ.get('WEBHOOK')
-PORT = int(os.environ.get('PORT', '8443'))
+def add_handlers(dispatcher):
+    dispatcher.add_handler(MessageHandler(Filters.text & (Filters.entity('url') | Filters.entity('text_link')), handle_link))
+    dispatcher.add_error_handler(error_callback)
 
+def setup_webhook(updater, token):
+    WEBHOOK = os.environ.get('WEBHOOK')
+    PORT = int(os.environ.get('PORT', '8443'))
+    updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=token)
+    updater.bot.set_webhook(WEBHOOK + token)
+
+TOKEN = os.environ.get('TOKEN')
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                      level=logging.INFO)
 
 updater = Updater(TOKEN)
 dispatcher = updater.dispatcher
-dispatcher.add_handler(MessageHandler(Filters.text & (Filters.entity('url') | Filters.entity('text_link')), handle_link))
-dispatcher.add_error_handler(error_callback)
+add_handlers(dispatcher)
 
-
-# add handlers
-updater.start_webhook(listen="0.0.0.0",
-                      port=PORT,
-                      url_path=TOKEN)
-updater.bot.set_webhook(WEBHOOK + TOKEN)
+setup_webhook(updater, token)
 updater.idle()
 

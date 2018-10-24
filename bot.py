@@ -4,9 +4,6 @@ import logging
 import os
 import feedparser
 
-def hello(bot, update):
-    update.message.reply_text(update.message.text.upper())
-
 def handle_link(bot, update):
 	NewsFeed = feedparser.parse(update.message)
 	entry = NewsFeed.entries[1]
@@ -20,7 +17,6 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
                      level=logging.INFO)
 
 updater = Updater(TOKEN)
-updater.dispatcher.add_handler(MessageHandler(Filters.text, hello))
 updater.dispatcher.add_handler(MessageHandler(Filters.entity("url"), handle_link))
 
 # add handlers

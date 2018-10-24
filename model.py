@@ -29,6 +29,7 @@ class Model:
             raise RuntimeError("DATABASE_URL is not set")
 
         self.engine = create_engine(os.getenv("DATABASE_URL"))
+        Base.metadata.create_all(self.engine)
         Base.metadata.bind = self.engine
         db_session = sessionmaker(bind=self.engine)
         self.session = db_session()

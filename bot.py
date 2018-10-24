@@ -55,6 +55,6 @@ updater = Updater(TOKEN)
 dispatcher = updater.dispatcher
 add_handlers(dispatcher)
 
-setup_webhook(updater, token)
+setup_webhook(updater, TOKEN)
 updater.idle()
 

@@ -2,6 +2,9 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler, Filters
 from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
+
+from urllib.parse import urlparse
+
 from model import Model
 
 import logging
@@ -10,6 +13,14 @@ import feedparser
 
 from time import mktime
 from datetime import datetime, date, time
+
+
+def validate_url(x):
+    try:
+        result = urlparse(x)
+        return result.scheme and result.netloc and result.path
+    except:
+        return False
 
 
 def get_publish_date(post):
@@ -27,6 +38,10 @@ def handle_update(bot, update):
 def update_feed(bot, chat_id, feed):
     d = feedparser.parse(feed)
 
+    if not validate_url(feed):
+        print("Invalid URL!" + feed)
+        return
+
     for post in d.entries:
         text = post.title
         text += '\t' + post.link
@@ -36,10 +51,11 @@ def update_feed(bot, chat_id, feed):
             bot.send_message(chat_id=chat_id, text=text)
 
 
-def handle_add_link(bot, update):
+def handle_add_link(bot, update, args):
     chat_id = update.message.chat_id
-    link = update.message.text
-    model.add_feed(chat_id, link)
+    for arg in args:
+        if validate_url(arg):
+            model.add_feed(chat_id, arg)
     bot.send_message(chat_id=chat_id, text="Added! :)")
 
 
@@ -68,7 +84,7 @@ def error_callback(bot, update, error):
 
 def add_handlers(dispatcher):
     dispatcher.add_handler(
-        CommandHandler('add', handle_add_link))
+        CommandHandler('add', handle_add_link, pass_args=True))
 
     dispatcher.add_handler(
         CommandHandler('update', handle_update))

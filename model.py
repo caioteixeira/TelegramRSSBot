@@ -10,11 +10,13 @@ Base = declarative_base()
 
 
 class Chat(Base):
+    __tablename__ = 'chat'
     id = Column(Integer, primary_key=True)
     chat_id = Column(String(250), nullable=False)
 
 
 class Feed(Base):
+    __tablename__ = 'feed'
     id = Column(Integer, primary_key=True)
     chat_id = Column(Integer, ForeignKey('chat.id'))
     chat = relationship(Chat)

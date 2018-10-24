@@ -12,7 +12,7 @@ def processAudio(bot, update):
 	downloadedVoicePath = voice.download()
 	update.message.reply_text(downloadedVoicePath)
 	with open(downloadedVoicePath, 'rb') as f:
-		resp = witClient.speech(f, None, {'Content-Type': 'audio/wav'})
+		resp = witClient.speech(f, None, {'Content-Type': 'audio/ogg'})
 		update.message.reply_text(str(resp))
 
 TOKEN = os.environ.get('TOKEN')

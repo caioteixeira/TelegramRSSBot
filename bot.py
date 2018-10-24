@@ -7,11 +7,11 @@ import os
 import feedparser
 
 def handle_link(bot, update):
-	d = feedparser.parse(update.message)
-	titles = ''
-	for post in d.entries:
-		titles += post.title + '\n'
-	bot.send_message(chat_id=update.message.chat_id, text=titles)
+    d = feedparser.parse(update.message)
+    titles = ''
+    for post in d.entries:
+        titles += post.title + '\n'
+    bot.send_message(chat_id=update.message.chat_id, text=titles)
 
 def error_callback(bot, update, error):
     try:
@@ -20,19 +20,19 @@ def error_callback(bot, update, error):
         print('Unauthorized chat id')
         # remove update.message.chat_id from conversation list
     except BadRequest:
-    	print('malformed request')
+        print('malformed request')
         # handle malformed requests - read more below!
     except TimedOut:
-		print('time out!')
+        print('time out!')
         # handle slow connection problems
     except NetworkError:
-    	print('NetworkError!')
+        print('NetworkError!')
         # handle other connection problems
     except ChatMigrated as e:
-    	print('Chat ChatMigrated')
+        print('Chat ChatMigrated')
         # the chat_id of a group has changed, use e.new_chat_id instead
     except TelegramError:
-    	print('Error!')
+        print('Error!')
         # handle all other telegram related errors
 
 TOKEN = os.environ.get('TOKEN')

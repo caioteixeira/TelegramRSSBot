@@ -6,7 +6,6 @@ import feedparser
 
 def handle_link(bot, update):
 	d = feedparser.parse(update.message)
-	update.message.reply_text('PARSE')
 	for post in d.entries:
 		bot.send_message(chat_id=update.message.chat_id, text=post.title)
 

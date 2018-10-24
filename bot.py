@@ -8,7 +8,9 @@ import feedparser
 
 def handle_link(bot, update):
     d = feedparser.parse(update.message)
+    print('parsed! ' + update.message)
     for post in d.entries:
+        print('title: ' + post.title)
         bot.send_message(chat_id=update.message.chat_id, text=post.title)
 
 def error_callback(bot, update, error):

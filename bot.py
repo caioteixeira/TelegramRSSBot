@@ -21,7 +21,7 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 updater = Updater(TOKEN)
 updater.dispatcher.add_handler(MessageHandler(Filters.text, hello))
-updater.dispatcher.add_handler(MessageHandler(Filters.entity("url")), handle_link)
+updater.dispatcher.add_handler(MessageHandler(Filters.entity("url"), handle_link))
 
 # add handlers
 updater.start_webhook(listen="0.0.0.0",

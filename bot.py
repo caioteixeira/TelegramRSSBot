@@ -56,6 +56,8 @@ def handle_add_link(bot, update, args):
     for arg in args:
         if validate_url(arg):
             model.add_feed(chat_id, arg)
+        else:
+            bot.send_message(chat_id=chat_id, text='Invalid URL!')
     bot.send_message(chat_id=chat_id, text="Added! :)")
 
 

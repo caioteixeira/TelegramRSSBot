@@ -6,13 +6,23 @@ import logging
 import os
 import feedparser
 
+from time import mktime
+from datetime import datetime, date, time
+
+def get_publish_date(post):
+    parsed_date = post.published_parsed
+    return datetime.fromtimestamp(mktime(parsed_date))
 
 def handle_link(bot, update):
     d = feedparser.parse(update.message.text)
+
     for post in d.entries:
         text = post.title
         text += '\t' + post.link
-        bot.send_message(chat_id=update.message.chat_id, text=text)
+        publish_date = get_publish_date(post)
+        date_diff = datetime.utcnow() - publish_date;
+        if(date_diff.days < 1):
+            bot.send_message(chat_id=update.message.chat_id, text=text)
 
 
 def error_callback(bot, update, error):

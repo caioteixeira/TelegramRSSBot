@@ -32,7 +32,7 @@ def handle_update(bot, update):
     feeds = model.get_all_feeds(update.message.chat_id)
 
     for feed in feeds:
-        update_feed(bot, feed.chat_id, feed.url)
+        update_feed(bot, feed.chat.chat_id, feed.url)
 
 
 def update_feed(bot, chat_id, feed):

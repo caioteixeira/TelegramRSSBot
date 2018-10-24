@@ -12,6 +12,7 @@ Base = declarative_base()
 class Chat(Base):
     __tablename__ = 'chat'
     id = Column(Integer, primary_key=True)
+    chat_id = Column(Integer, nullable=False)
 
 
 class Feed(Base):
@@ -34,9 +35,9 @@ class Model:
         self.session = db_session()
 
     def get_chat(self, chat_id):
-        chat = self.session.query(Chat).filter(Chat.id == chat_id).one_or_none()
+        chat = self.session.query(Chat).filter(Chat.chat_id == chat_id).one_or_none()
         if chat is not None:
-            chat = Chat(id=chat_id)
+            chat = Chat(chat_id=chat_id)
             self.session.add(chat)
         return chat
 
@@ -47,4 +48,4 @@ class Model:
         self.session.commit()
 
     def get_all_feeds(self, chat_id):
-        return self.session.query(Feed).filter(Feed.chat_id == chat_id).all()
+        return self.session.query(Feed).filter(Feed.chat.chat_id == chat_id).all()

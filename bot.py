@@ -3,6 +3,7 @@ from telegram.ext import MessageHandler, Filters
 from wit import Wit
 import logging
 import os
+import soundfile as sf
 
 def hello(bot, update):
     update.message.reply_text(update.message.text.upper())
@@ -11,7 +12,10 @@ def processAudio(bot, update):
 	voice = update.message.voice.get_file()
 	downloadedVoicePath = voice.download()
 	update.message.reply_text(downloadedVoicePath)
-	with open(downloadedVoicePath, 'rb') as f:
+	data, samplerate = sf.read(downloadedVoicePath)
+	sf.write('new_file.wav', data, samplerate)
+
+	with open('new_file.wav', 'rb') as f:
 		resp = witClient.speech(f, None, {'Content-Type': 'audio/ogg'})
 		update.message.reply_text(str(resp))
 

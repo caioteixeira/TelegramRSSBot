@@ -10,6 +10,7 @@ def hello(bot, update):
 def processAudio(bot, update):
 	voice = update.message.voice.get_file()
 	downloadedVoicePath = voice.download()
+	update.message.reply_text(downloadedVoicePath)
 	with open(downloadedVoicePath, 'rb') as f:
 		resp = witClient.speech(f, None, {'Content-Type': 'audio/wav'})
 		update.message.reply_text(str(resp))

@@ -5,9 +5,8 @@ import os
 import feedparser
 
 def handle_link(bot, update):
-	NewsFeed = feedparser.parse(update.message)
-	entry = NewsFeed.entries[0]
-	update.message.reply_text(entry.summary + entry.link)
+	d = feedparser.parse(update.message)
+	update.message.reply_text(d['feed']['title'])
 
 TOKEN = os.environ.get('TOKEN')
 WEBHOOK = os.environ.get('WEBHOOK')

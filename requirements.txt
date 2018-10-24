@@ -2,3 +2,4 @@ python-telegram-bot
 APScheduler==3.0.0
 psycopg2
 sqlalchemy
+wit

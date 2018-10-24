@@ -6,7 +6,7 @@ import feedparser
 
 def handle_link(bot, update):
 	NewsFeed = feedparser.parse(update.message)
-	entry = NewsFeed.entries[1]
+	entry = NewsFeed.entries[0]
 	update.message.reply_text(entry.summary + entry.link)
 
 TOKEN = os.environ.get('TOKEN')
